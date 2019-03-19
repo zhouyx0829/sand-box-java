@@ -1,6 +1,10 @@
 package com.common.mvc.advice;
 
+import com.common.mvc.model.Result;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
@@ -26,11 +30,13 @@ public class CustomerResponseBodyAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-        return false;
+        String packageName = returnType.getMember().getDeclaringClass().getPackage().getName();
+        return packageName.contains(controllerPackage);
     }
 
     /**
      * 返回的body 处理
+     * 可以处理返回加密
      *
      * @param body
      * @param returnType
@@ -41,7 +47,20 @@ public class CustomerResponseBodyAdvice implements ResponseBodyAdvice<Object> {
      * @return
      */
     @Override
-    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        return null;
+    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
+                                  Class<? extends HttpMessageConverter<?>> selectedConverterType,
+                                  ServerHttpRequest request, ServerHttpResponse response) {
+        Result result = new Result();
+        result.setSuccess(true);
+        result.setDate(body);
+        if (returnType.getGenericParameterType().equals(String.class)) {
+            response.getHeaders().set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE);
+            try {
+                return new ObjectMapper().writeValueAsString(result);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 }
