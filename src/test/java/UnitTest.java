@@ -1,5 +1,6 @@
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -61,5 +62,6 @@ public class UnitTest {
     public void test3() {
 
         log.info(RandomStringUtils.random(11, "0123456789"));
+        System.out.println(StringUtils.isNumeric("D2019021403595"));
     }
 }
