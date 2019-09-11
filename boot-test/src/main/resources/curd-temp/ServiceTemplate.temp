@@ -1,0 +1,13 @@
+package com.boot.sand.services.impl;
+
+import static com.boot.sand.model.jooq.Tables.{{tableName}};
+import com.shanhs.common.dao.GenericService;
+import org.springframework.stereotype.Service;
+import com.boot.sand.services.{{model}}Service;
+
+import com.boot.sand.model.{{model}};
+
+@Service
+public class {{model}}ServiceImpl extends GenericService<{{model}}, {{primaryType}}> implements {{model}}Service{
+
+}

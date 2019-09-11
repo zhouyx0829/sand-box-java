@@ -1,0 +1,9 @@
+package com.boot.sand.services;
+
+import IGenericService;
+import com.boot.sand.model.{{model}};
+
+
+public interface {{model}}Service extends IGenericService<{{model}}, {{primaryType}}> {
+
+}

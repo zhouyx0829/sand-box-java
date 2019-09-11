@@ -1,3 +1,5 @@
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
@@ -6,9 +8,18 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
+import vo.SkuItem;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author yx.zhou
@@ -63,5 +74,75 @@ public class UnitTest {
 
         log.info(RandomStringUtils.random(11, "0123456789"));
         System.out.println(StringUtils.isNumeric("D2019021403595"));
+    }
+
+    @Test
+    public void test4() {
+
+        List<SkuItem> skuItems = Arrays.asList(SkuItem.builder()
+            .num(1).skuCode("19062402339")
+            .build());
+
+
+        try {
+            String json = "alipayshop|[{\"skuCode\":\"19062402339\",\"num\":1,\"singlePrice\":null}]";
+
+            System.out.println(Stream.of(json.split(",")).collect(Collectors.toList()));
+            String itemJson = json.split("[|]")[1];
+            log.info("test4 json ->{}", itemJson);
+            List<SkuItem> skuItems1;
+            skuItems1 = JSON.parseObject(itemJson, new TypeReference<List<SkuItem>>() {
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("test4 e->{}", e);
+        }
+
+    }
+
+    @Test
+    public void tset5() {
+
+        log.info("tset51 -> {}", checkImage("https://shanhs-malls.oss-cn-shenzhen.aliyuncs.com/1/100/4788/1.jpg"));
+
+        log.info("tset52 -> {}", checkImage("https://shanhs-malls.oss-cn-shenzhen.aliyuncs.com/1/110/4559/1.jpg"));
+
+    }
+
+    @Test
+    public void tset6() {
+
+        LocalDate createtm = new Timestamp(1563331319000L).toLocalDateTime().toLocalDate();
+        LocalDate nowDate = LocalDate.now();
+//        Long diff = 24L - ChronoUnit.SECONDS.between(createtm, nowDate);
+        ;
+        Long diff = (System.currentTimeMillis() - new Timestamp(1563451894000L).getTime()) / (60 * 60 * 1000L);
+        Integer leftTime = (24 - diff.intValue()) > 0 ? (24 - diff.intValue()) : 0;
+        log.info("tset6 diff->{}", leftTime);
+
+    }
+
+    private boolean checkImage(String imageUrl) {
+
+        try {
+            URL url = new URL(imageUrl);
+            HttpURLConnection urlcon = (HttpURLConnection) url.openConnection();
+            urlcon.setRequestMethod("GET");
+            urlcon.setRequestProperty("Content-type", "application/x-www-form-urlencoded");
+            return urlcon.getResponseCode() == HttpURLConnection.HTTP_OK;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Test
+    public void test7() {
+
+        System.out.println("test7->{}" + UUID.randomUUID().toString());
+        System.out.println("test7->{}" + UUID.randomUUID().toString());
+        System.out.println("test7->{}" + UUID.randomUUID().toString());
+        System.out.println("test7->{}" + UUID.randomUUID().toString());
     }
 }

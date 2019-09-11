@@ -3,14 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>sand-box</artifactId>
+        <artifactId>com.zyx</artifactId>
         <groupId>sand-box</groupId>
         <version>1.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>common-dao</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.21</version>
     <name>common-dao</name>
     <url>http://maven.apache.org</url>
     <properties>
@@ -28,6 +28,13 @@
             <url>http://47.107.161.184:8081/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+    <repositories>
+        <repository>
+            <id>zyx</id>
+            <name>zyx maven Repository</name>
+            <url>http://47.107.161.184:8081/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

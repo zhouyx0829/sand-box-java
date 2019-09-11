@@ -1,0 +1,12 @@
+package com.boot.sand.model;
+
+import com.boot.sand.model.jooq.tables.pojos.{{modelPojoName}};
+
+public class {{model}} extends {{modelPojoName}}{
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+}

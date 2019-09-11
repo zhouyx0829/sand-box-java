@@ -2,19 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>sand-box</artifactId>
+        <groupId>sand-box</groupId>
+        <version>1.1</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>sand-box</groupId>
-    <artifactId>sand-box</artifactId>
-    <version>1.1</version>
-    <modules>
-        <module>common-dao</module>
-        <module>common-mvc</module>
-        <module>boot-test</module>
-        <module>config-server</module>
-    </modules>
     <packaging>pom</packaging>
-    <name>sand-box-jar</name>
+    <name>boot-test-jar</name>
+    <artifactId>boot-test</artifactId>
     <url>http://maven.apache.org</url>
     <dependencyManagement>
         <dependencies>
@@ -27,13 +23,12 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.8.RELEASE</version>
-        <relativePath/>
-    </parent>
+
+    <properties>
+        <basedir.lib>${basedir}/src/main/webapp/WEB-INF/lib</basedir.lib>
+    </properties>
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
@@ -188,8 +183,9 @@
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq-codegen</artifactId>
-            <version>3.9.2</version>
+            <version>3.9.6</version>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -203,8 +199,83 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.shanhs</groupId>
+                <artifactId>shanhs-codegen</artifactId>
+                <version>1.2.4</version>
+                <configuration>
+                    <packageName>com.boot.sand</packageName>
+                    <pojos>
+                        <pojo>bs_member,Integer</pojo>
+                        <!--<pojo>log_zhuanzhuan_ypee,Long</pojo>-->
+                        <!--<pojo>pd_product_stock_info,Long</pojo>-->
+                        <!--<pojo>nb_shop_stock_change_log,Integer</pojo>-->
+                        <!--<pojo>nb_system_auto_services_manager,Integer</pojo>-->
+                    </pojos>
+                    <useServiceInterface>true</useServiceInterface>
+                </configuration>
+            </plugin>
+            <plugin>
+
+                <!-- Specify the maven code generator plugin -->
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>3.9.2</version>
+                <!-- The plugin should hook into the generate goal -->
+                <!-- <executions> -->
+                <!-- <execution> -->
+                <!-- <goals> -->
+                <!-- <goal>generate</goal> -->
+                <!-- </goals> -->
+                <!-- </execution> -->
+                <!-- </executions> -->
+
+                <!-- Specify the plugin configuration. The configuration format is the
+                    same as for the standalone code generator -->
+                <configuration>
+
+                    <jdbc>
+                        <driver>com.mysql.jdbc.Driver</driver>
+                        <url>${jdbc.url}</url>
+                        <user>${jdbc.user}</user>
+                        <password>${jdbc.password}</password>
+                    </jdbc>
+
+                    <!-- Generator parameters -->
+                    <generator>
+                        <!-- 自定义一些生成的规则 -->
+                        <strategy>
+                            <name>com.common.zyx.dao.CustomerJOOQGeneratorStrategy</name>
+                        </strategy>
+                        <generate>
+                            <pojos>true</pojos>
+                            <interfaces>true</interfaces>
+                        </generate>
+                        <database>
+                            <includes>(bs_member)</includes>
+                            <excludes></excludes>
+                            <schemata>
+                                <schema>
+                                    <inputSchema>pback</inputSchema>
+                                </schema>
+                                <schema>
+                                    <inputSchema>ibus</inputSchema>
+                                </schema>
+                                <schema>
+                                    <inputSchema>report_middile_pback</inputSchema>
+                                </schema>
+                            </schemata>
+                        </database>
+                        <target>
+                            <packageName>com.common.dao</packageName>
+                            <directory>target/generated-sources/src/main/java</directory>
+                        </target>
+                    </generator>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
     <profiles>
         <profile>
             <id>dev</id>
@@ -218,6 +289,7 @@
                 <jooq.inputSchema>pback</jooq.inputSchema>
             </properties>
         </profile>
+
         <profile>
             <id>test</id>
             <properties>
@@ -227,6 +299,7 @@
                 <jooq.inputSchema>pback</jooq.inputSchema>
             </properties>
         </profile>
+
         <profile>
             <id>pro</id>
             <properties>
@@ -237,4 +310,6 @@
             </properties>
         </profile>
     </profiles>
+
+
 </project>

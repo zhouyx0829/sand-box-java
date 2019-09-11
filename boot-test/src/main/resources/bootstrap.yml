@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: boot-test
+  cloud:
+    config:
+      label: master
+      discovery:
+        enabled: true
+        serviceId: shs-config-server
+#  zipkin:
+#    base-url: http://shs-cloud-sleuth:8099
+  sleuth:
+    sampler:
+      percentage: 1.0
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      maxLifetime: 1765000
+      maximumPoolSize: 5
+      minimumIdle: 1
+      connectionTimeout: 30000
+      idleTimeout: 600000
+    jooq:
+      sql-dialect: mysql
+      withRenderSchema: true
+    username: dev1
+    password: Dev123__
+    url: jdbc:mysql://rm-wz9l2s12621dp98rzwo.mysql.rds.aliyuncs.com:3306/pback?useOldAliasMetadataBehavior=true&useUnicode=true
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+#    lease-renewal-interval-in-seconds: 3
+#    lease-expiration-duration-in-seconds: 10
+#  client:
+#    # registry-fetch-interval-seconds: 2
+#    serviceUrl:
+#      defaultZone: http://shs-service-discovery:8090/eureka/
+
+#logging.config: "http://shs-config-server:8091/default/default/master/logback-spring.v4.xml"
+
+---
+# 开发环境配置
+spring:
+  profiles: dev
+#eureka:
+#  instance:
+#    prefer-ip-address: false
+#    hostname: ${spring.application.name}
+
+---
+# 开发环境配置
+spring:
+  profiles: test
+logging:
+  level:
+    org:
+      jooq: DEBUG

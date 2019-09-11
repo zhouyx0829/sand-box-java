@@ -12,6 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 public class GBTwoSocket {
 
     public void powerByTwo() {
-        log.info("使用二相电流供电");
+//        log.info("使用二相电流供电");
     }
 }

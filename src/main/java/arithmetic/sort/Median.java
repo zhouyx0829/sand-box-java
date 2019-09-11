@@ -53,14 +53,15 @@ public class Median {
 
         int end = Math.max(a[aLengh - 1], b[bLength - 1]);
 
-        //找到第一个x > = k数量较小或等于x
+        //找到第一个x >= k数量较小或等于x
         while (start + 1 < end) {
 
         }
+        return  0;
     }
 
     /**
-     * 查找小雨或者等于
+     * 查找小于或者等于
      *
      * @param arr
      * @param number
@@ -68,6 +69,7 @@ public class Median {
      */
     private int countSmallerOrEqual(int arr[], int number) {
 
+        return 0;
     }
 
 }
